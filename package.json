@@ -1,0 +1,17 @@
+{
+  "name": "Js-Recognition",
+  "version": "1.0.0",
+  "description": "Human Activity Recognition project work done in Javascript",
+  "main": "index.js",
+  "author": "nyankahmensah, devDeclan",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^7.1.6",
+    "glob-all": "^3.2.1",
+    "immutable": "^4.0.0-rc.12",
+    "modelscript": "^2.4.0",
+    "pandas-js": "^0.2.4",
+    "uuid": "^8.0.0",
+    "yargs": "^15.3.1"
+  }
+}
