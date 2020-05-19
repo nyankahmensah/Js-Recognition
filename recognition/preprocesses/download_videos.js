@@ -11,6 +11,30 @@ const { promisify } = require('util');
 exec = promisify(exec);
 const glob = require('glob-all');
 
+let limite = [
+	'testifying',
+	'eating spaghetti',
+	'dribbling basketball',
+	'playing tennis',
+	'tap dancing',
+	'climbing a rope',
+	'brushing teeth',
+	'balloon blowing',
+	'feeding birds',
+	'skiing (not slalom or crosscountry)',
+	'dining',
+	'hurdling',
+	'javelin throw',
+	'pushing wheelchair',
+	'snowkiting',
+	'balloon blowing',
+	'getting a haircut',
+	'gymnastics tumbling',
+	'petting animal (not cat)',
+	'biking through snow',
+	'brushing teeth',
+]
+
 function formatString(str, format = '0-6') {
 	let [delimiter, length] = format.split('-');
 	return padStart(str, length, delimiter);
@@ -19,16 +43,18 @@ function formatString(str, format = '0-6') {
 function iterrows(dataset) {
 	let iterable = dataset.to_json();
 	return times(dataset.length, function(index) {
-		return [
-			{
-				'video-id': iterable['video-id'][index],
-				'start-time': iterable['start-time'][index],
-				'end-time': iterable['end-time'][index],
-				'label-name': iterable['label-name'][index],
-				'split': iterable['split'][index],
-			},
-			index
-		]
+		if(limite.includes(iterable['label-name'][index])) {
+			return [
+				{
+					'video-id': iterable['video-id'][index],
+					'start-time': iterable['start-time'][index],
+					'end-time': iterable['end-time'][index],
+					'label-name': iterable['label-name'][index],
+					'split': iterable['split'][index],
+				},
+				index
+			]
+		}
 	})
 }
 
@@ -59,11 +85,13 @@ function create_video_folders(
 	);
 	labels.forEach(
 		function(label, index) {
-			let current_dir = path.join(output_dir, label);
-			if(!fs.existsSync(current_dir)) {
-				fs.mkdirSync(current_dir);
+			if(limite.includes(label)) {
+				let current_dir = path.join(output_dir, label);
+				if(!fs.existsSync(current_dir)) {
+					fs.mkdirSync(current_dir);
+				}
+				label_to_dir[label] = current_dir;
 			}
-			label_to_dir[label] = current_dir;
 		}
 	)
 	return label_to_dir;
